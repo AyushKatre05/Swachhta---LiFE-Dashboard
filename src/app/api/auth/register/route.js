@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connect } from "@/database/mongo.config";
 import { User } from "@/models/User";
 import { registerSchema } from "@/validator/authValidationSchema";
@@ -6,16 +6,20 @@ import vine, { errors } from "@vinejs/vine";
 import ErrorReporter from "@/validator/ErrorReporter";
 import bcrypt from "bcryptjs";
 
+// Connect to the database
 connect();
 
+// Handle POST request
 export async function POST(request) {
   try {
+    // Parse the request body
     const body = await request.json();
     vine.errorReporter = () => new ErrorReporter();
     const validator = vine.compile(registerSchema);
     const output = await validator.validate(body);
 
     try {
+      // Check if the user already exists
       const user = await User.findOne({ email: output.email });
       if (user) {
         return NextResponse.json(
@@ -38,10 +42,12 @@ export async function POST(request) {
         );
       }
     } catch (error) {
+      // Handle errors during user creation
       return NextResponse.json({ error }, { status: 500 });
     }
   } catch (error) {
     if (error instanceof errors.E_VALIDATION_ERROR) {
+      // Handle validation errors
       return NextResponse.json(
         { status: 400, errors: error.messages },
         { status: 200 }
