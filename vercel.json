@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/auth/register.js": {
+        "maxDuration": 60
+      }
+    }
+  }
+  
