@@ -45,7 +45,7 @@ export default function SignInOne() {
 
   const googleLogin = async () => {
     await signIn("google", {
-      callbackUrl: "/dashboard",
+      callbackUrl: "/",
       redirect: true,
     });
   };
