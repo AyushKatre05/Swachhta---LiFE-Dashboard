@@ -25,7 +25,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <Toast />
       <div className="w-[500px] shadow-md rounded-lg p-5">
         <h1 className="text-2xl font-bold">Admin Login</h1>
