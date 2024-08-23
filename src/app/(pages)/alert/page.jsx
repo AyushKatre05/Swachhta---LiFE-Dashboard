@@ -1,59 +1,73 @@
-"use client"
-import React from 'react';
-import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
-export default function Alerts() {
+export default function ActionsSection() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-gray-800 text-white p-6 shadow-md dark:bg-gray-800"
-      >
-        <h1 className="text-2xl font-bold">Swachhta & LiFE Alerts</h1>
-      </motion.header>
+    <motion.section
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className="p-4 md:p-6 flex flex-col gap-4 md:gap-6"
+    >
+      <h2 className="text-xl md:text-2xl font-semibold mb-2 md:mb-4">Actions</h2>
+      
+      {/* Section 1: Buttons */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Button className="bg-blue-600 text-white p-4 rounded-lg shadow-md flex-1 transition-transform transform hover:scale-105 dark:bg-blue-700">
+            Generate Report
+          </Button>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Button className="bg-blue-700 text-white p-4 rounded-lg shadow-md flex-1 transition-transform transform hover:scale-105 dark:bg-blue-800">
+            Review Alerts
+          </Button>
+        </motion.div>
+      </div>
 
-      <motion.main
+      {/* Section 2: Additional Actions */}
+      <div className="mt-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex flex-col md:flex-row gap-4 md:gap-6"
+        >
+          <div className="flex-1">
+            <Button className="bg-green-600 text-white p-4 rounded-lg shadow-md w-full transition-transform transform hover:scale-105 dark:bg-green-700">
+              View Analytics
+            </Button>
+          </div>
+          <div className="flex-1">
+            <Button className="bg-yellow-600 text-white p-4 rounded-lg shadow-md w-full transition-transform transform hover:scale-105 dark:bg-yellow-700">
+              Update Settings
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Section 3: Additional Information */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex-1 p-4 space-y-6"
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md"
       >
-        <section className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow dark:bg-gray-800 dark:text-white">
-          <div className="flex items-center space-x-3">
-            <AlertTriangle className="text-yellow-500" />
-            <h3 className="text-xl font-semibold">Deviations in Cleanliness Standards</h3>
-          </div>
-          <p className="mt-2">
-            Anomalies detected in cleanliness practices at the XYZ Post Office. Immediate action required to maintain Swachhta standards.
-          </p>
-          <span className="text-sm text-gray-500 dark:text-gray-400">5 minutes ago</span>
-        </section>
-
-        <section className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow dark:bg-gray-800 dark:text-white">
-          <div className="flex items-center space-x-3">
-            <CheckCircle className="text-green-500" />
-            <h3 className="text-xl font-semibold">Green Practices Confirmed</h3>
-          </div>
-          <p className="mt-2">
-            The Green Growth standards have been successfully implemented at ABC Post Office.
-          </p>
-          <span className="text-sm text-gray-500 dark:text-gray-400">30 minutes ago</span>
-        </section>
-
-        <section className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow dark:bg-gray-800 dark:text-white">
-          <div className="flex items-center space-x-3">
-            <Clock className="text-blue-500" />
-            <h3 className="text-xl font-semibold">Pending Review</h3>
-          </div>
-          <p className="mt-2">
-            Awaiting review for the cleanliness inspection report of LMN Post Office. Please complete the review process.
-          </p>
-          <span className="text-sm text-gray-500 dark:text-gray-400">1 hour ago</span>
-        </section>
-      </motion.main>
-    </div>
+        <h3 className="text-lg font-semibold mb-2">Additional Information</h3>
+        <p>
+          Use these buttons to manage your dashboard efficiently. Each action is designed to improve your workflow and provide quick access to essential features.
+        </p>
+      </motion.div>
+    </motion.section>
   );
 }
