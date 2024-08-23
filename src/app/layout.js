@@ -1,7 +1,13 @@
+"use client";
+
 import "./globals.css";
 import { Lato } from "next/font/google";
 import NextAuthSessionProvider from "./provider/sessionProvider";
 import { ThemeProvider } from "../components/theme-provider";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar"; // Adjust the path if necessary
+import { useState } from "react";
+
 const inter = Lato({ weight: ["900", "400"], subsets: ["latin"] });
 
 export const metadata = {
@@ -10,16 +16,38 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <html lang="en">
       <body className={inter.className}>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextAuthSessionProvider>
+            <div className="flex min-h-screen">
+              <Sidebar
+                isOpen={isSidebarOpen}
+                toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                className={`fixed md:relative z-30 ${isSidebarOpen ? 'block' : 'hidden'} md:block`}
+              />
+              <div className="flex-1 flex flex-col pl-64">
+                <Header
+                  isSidebarOpen={isSidebarOpen}
+                  toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                />
+                <main className="flex-1 overflow-y-auto p-6">
+                  {children}
+                </main>
+                <footer className="bg-blue-900 text-white text-center p-4 shadow-inner dark:bg-blue-800">
+                  <p>&copy; 2024 Swachhta & LiFE Dashboard</p>
+                </footer>
+              </div>
+            </div>
+          </NextAuthSessionProvider>
         </ThemeProvider>
       </body>
     </html>
