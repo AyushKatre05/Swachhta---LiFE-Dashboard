@@ -1,5 +1,3 @@
-"use client";
-
 import "./globals.css";
 import { Lato } from "next/font/google";
 import NextAuthSessionProvider from "./provider/sessionProvider";
