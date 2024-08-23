@@ -11,7 +11,7 @@ export default function Header({ toggleSidebar }) {
       >
         <Menu/>
       </button>
-      <h1 className="text-xl">Dashboard Header</h1>
+      <h1 className="text-xl">Swachhta & LiFE Dashboard</h1>
       <ModeToggle/>
     </header>
   );
