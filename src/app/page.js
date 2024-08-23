@@ -1,11 +1,15 @@
-import Dashboard from "@/components/Dashboard";
+"use client";
+import DashboardLayout from "@/app/(pages)/layout";
+import OverviewSection from "@/app/(pages)/OverviewSection/page";
+import ActionsSection from "@/app/(pages)/alert/page";
+import StatisticsSection from "@/app/(pages)/statistics/page";
 
-export default async function Home() {
+export default function Dashboard() {
   return (
-    <main className="h-full">
-      <div className="container">
-      <Dashboard/>
-      </div>
-    </main>
+    <DashboardLayout>
+      <OverviewSection />
+      <ActionsSection />
+      <StatisticsSection />
+    </DashboardLayout>
   );
 }
