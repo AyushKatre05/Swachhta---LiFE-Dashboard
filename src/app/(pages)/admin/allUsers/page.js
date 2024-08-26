@@ -1,6 +1,9 @@
 "use client"; // This line is necessary for client-side components in Next.js
 
 import { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { motion } from 'framer-motion';
 
 export default function AdminDashboard() {
   const [userDetails, setUserDetails] = useState([]);
@@ -15,6 +18,7 @@ export default function AdminDashboard() {
         setUserDetails(data.userDetails);
       } catch (error) {
         console.error('Failed to fetch user details', error);
+        toast.error('Failed to fetch user details');
       }
     };
 
@@ -37,12 +41,13 @@ export default function AdminDashboard() {
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.success);
+        toast.success('Message sent successfully!');
       } else {
-        alert(result.error);
+        toast.error(result.error || 'Failed to send message');
       }
     } catch (error) {
       console.error('Failed to send message', error);
+      toast.error('An error occurred');
     }
   };
 
@@ -52,21 +57,22 @@ export default function AdminDashboard() {
 
       <div className="mb-4">
         <h3 className="text-lg font-semibold">User Details:</h3>
-        <ul className="list-disc pl-5">
+        <motion.select
+          id="userSelect"
+          value={selectedUserId}
+          onChange={(e) => setSelectedUserId(e.target.value)}
+          className="border border-gray-300 p-2 rounded w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <option value="">Select User</option>
           {userDetails.map(({ id, name, email }) => (
-            <li key={id} className="mb-2">
-              <div className="flex justify-between">
-                <span>{name} ({email})</span>
-                <button
-                  onClick={() => setSelectedUserId(id)}
-                  className="ml-4 bg-blue-500 text-white px-2 py-1 rounded"
-                >
-                  Select
-                </button>
-              </div>
-            </li>
+            <option key={id} value={id}>
+              {name} ({email})
+            </option>
           ))}
-        </ul>
+        </motion.select>
       </div>
 
       {selectedUserId && (
@@ -81,15 +87,19 @@ export default function AdminDashboard() {
             onChange={(e) => setMessage(e.target.value)}
             className="border border-gray-300 p-2 rounded w-full"
           />
-          <button
+          <motion.button
             onClick={handleSendMessage}
             className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
             disabled={!message}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Send Message
-          </button>
+          </motion.button>
         </div>
       )}
+
+      <ToastContainer />
     </div>
   );
 }
