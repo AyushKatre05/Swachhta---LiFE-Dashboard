@@ -1,61 +1,42 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import SignoutButton from "@/components/signoutButton";
-import { getServerSession } from "next-auth";
-
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 export default async function AdminDashboard() {
-  const session = await getServerSession(authOptions);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-md p-5">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-            Swachhta & LiFE Admin Dashboard
-          </h1>
-          <SignoutButton type="Admin" />
-        </div>
-      </header>
-
       {/* Main Content */}
-      <main className="flex-grow p-10 space-y-6">
+      <main className="flex-grow p-8 space-y-8">
         {/* Welcome Section */}
-        <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+        <section className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             Welcome, Admin!
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-700 dark:text-gray-300">
             Use this dashboard to manage Swachhta and LiFE practices across post offices.
           </p>
         </section>
 
-        {/* Session Info Section */}
-        <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            Your Session Information
-          </h2>
-          <pre className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md text-sm text-gray-800 dark:text-gray-200">
-            {session && JSON.stringify(session, null, 2)}
-          </pre>
-        </section>
-
-        {/* Placeholder for Additional Dashboard Components */}
-        <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+        {/* Dashboard Overview Section */}
+        <section className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             Dashboard Overview
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-700 dark:text-gray-300">
             This section can be expanded with charts, reports, and other admin tools.
           </p>
         </section>
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 p-5 text-center text-sm text-gray-500 dark:text-gray-400">
-        © 2024 Swachhta & LiFE. All rights reserved.
-      </footer>
+        {/* Alert Button Section */}
+        <section className="flex justify-center">
+          <Link href={'/admin/allUsers'}>
+            <Button className="bg-red-500 hover:bg-red-600 dark:bg-red-400 dark:hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+              Send Alert Message
+            </Button>
+          </Link>
+        </section>
+      </main>
     </div>
   );
 }
