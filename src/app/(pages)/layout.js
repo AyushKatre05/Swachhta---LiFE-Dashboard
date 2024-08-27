@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }) {
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 md:ml-64">
           {children}
         </main>
 

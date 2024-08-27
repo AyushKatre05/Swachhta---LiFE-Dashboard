@@ -4,7 +4,7 @@ import {ModeToggle} from '@/components/ui/modeToggle'
 
 export default function Header({ toggleSidebar }) {
   return (
-    <header className="bg-blue-900 text-white p-4 shadow-md dark:bg-blue-800 flex items-center justify-between">
+    <header className="bg-blue-900 text-white p-4 md:ml-64 shadow-md dark:bg-blue-800 flex items-center justify-between">
       <button
         onClick={toggleSidebar}
         className="text-white md:hidden"

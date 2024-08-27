@@ -8,7 +8,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     <div
       className={`fixed top-0 left-0 z-30 bg-gray-800 text-white dark:bg-gray-900 dark:text-gray-100 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0 md:relative md:w-64 transition-transform duration-300 ease-in-out overflow-y-auto h-screen md:h-auto`}
+      } md:translate-x-0 md:fixed md:w-64 transition-transform duration-300 ease-in-out overflow-y-auto h-screen md:h-screen`}
     >
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4 bg-gray-900 dark:bg-gray-800 md:justify-center">
