@@ -11,6 +11,7 @@ export default function LandingPage() {
       <header className="w-full flex justify-between items-center px-8 py-6 bg-gray-100 dark:bg-gray-900">
         <h1 className="text-3xl font-bold">Swachhta & LiFE Dashboard</h1>
         <div className="flex space-x-4">
+          <ModeToggle />
           <Link href={'/login'}>
             <motion.button 
               whileHover={{ scale: 1.05 }} 
@@ -20,16 +21,6 @@ export default function LandingPage() {
               Login
             </motion.button>
           </Link>
-          <Link href={'/register'}>
-            <motion.button 
-              whileHover={{ scale: 1.05 }} 
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-            >
-              Signup
-            </motion.button>
-          </Link>
-          <ModeToggle />
         </div>
       </header>
 
