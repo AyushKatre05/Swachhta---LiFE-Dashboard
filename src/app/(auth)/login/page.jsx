@@ -30,7 +30,7 @@ export default function SignInOne() {
         signIn("credentials", {
           email: authData.email,
           password: authData.password,
-          callbackUrl: "/",
+          callbackUrl: "/dashboard",
           redirect: true,
         });
       } else if (response.status === 400) {
@@ -45,7 +45,7 @@ export default function SignInOne() {
 
   const googleLogin = async () => {
     await signIn("google", {
-      callbackUrl: "/",
+      callbackUrl: "/dashboard",
       redirect: true,
     });
   };

@@ -23,7 +23,7 @@ export default function MagicLinkLogin({ params }) {
           signIn("credentials", {
             email: response.email,
             password: "",
-            callbackUrl: "/",
+            callbackUrl: "/dashboard",
             redirect: true,
           });
         } else if (response.status === 400) {

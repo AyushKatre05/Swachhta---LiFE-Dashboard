@@ -41,7 +41,7 @@ export default function SignUp() {
 
   const googleLogin = async () => {
     await signIn("google", {
-      callbackUrl: "/",
+      callbackUrl: "/dashboard",
       redirect: true,
     });
   };

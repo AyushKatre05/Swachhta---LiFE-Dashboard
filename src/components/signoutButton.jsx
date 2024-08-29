@@ -10,7 +10,7 @@ export default function SignoutButton({ type }) {
         className="text-red-500"
         onClick={() =>
           signOut({
-            callbackUrl: type === "Admin" ? "/admin/login" : "/login",
+            callbackUrl: type === "Admin" ? "/admin/login" : "/",
             redirect: true,
           })
         }
