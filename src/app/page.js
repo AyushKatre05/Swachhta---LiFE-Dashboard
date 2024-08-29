@@ -9,7 +9,7 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-green-50 dark:from-gray-900 dark:to-black text-gray-900 dark:text-gray-100 overflow-hidden">
       {/* Cursor Trail */}
-      <CursorTrail color="hsla(200, 100%, 50%, 0.7)" />
+      {/* <CursorTrail color="hsla(200, 100%, 50%, 0.7)" /> */}
 
       {/* Header Section */}
       <header className="w-full flex justify-between items-center px-8 py-6 bg-blue-600 dark:bg-gray-900 text-white">
@@ -52,7 +52,7 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.6 }}
         >
-          <Link href={'/login'}>
+          <Link href={'/register'}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -61,7 +61,7 @@ export default function LandingPage() {
               Get Started
             </motion.button>
           </Link>
-          <Link href={'/features'}>
+          <Link href={'/'}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
