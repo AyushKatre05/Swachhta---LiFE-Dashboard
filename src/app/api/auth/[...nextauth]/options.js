@@ -1,6 +1,5 @@
 import { connect } from "@/database/mongo.config";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { User as UserModel } from "@/models/User";
 
