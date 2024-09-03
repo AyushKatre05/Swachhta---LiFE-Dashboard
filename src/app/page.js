@@ -9,8 +9,7 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-200 dark:from-gray-900 dark:to-black text-gray-900 dark:text-gray-100 overflow-hidden">
       {/* Cursor Trail */}
-      {/* Uncomment if using CursorTrail */}
-      {/* <CursorTrail color="hsla(200, 100%, 50%, 0.7)" /> */}
+      <CursorTrail color="hsl(147, 50%, 47%)" />
 
       {/* Header Section */}
       <header className="w-full flex justify-between items-center px-8 py-4 bg-green-600 dark:bg-gray-900 text-white shadow-md">
