@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const CursorTrail = ({ color }) => {
+const CursorTrail = ({ color = "#90EE90" }) => { 
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -22,99 +22,64 @@ const CursorTrail = ({ color }) => {
       const { ref, color } = props;
       const ctx = ref.current?.getContext('2d');
       let AnimationFeature = {
-        friction: 0.5,
-        trails: 20,
-        size: 40,
-        dampening: 0.2,
-        tension: 0.98,
+        friction: 0.98, // High friction for fast movement
+        trails: 10, // Few particles
+        size: 2, // Ultra-small particle size
+        dampening: 0.98, // High dampening
+        tension: 0.99, // High tension
+        speed: 5, // Very high speed
+        lifespan: 200 // Particles last for 200ms
       };
 
       let cursorPosition = { x: 0, y: 0 };
       let running = true;
-      let newLines = [];
+      let particles = [];
 
-      class NewNode {
+      class Particle {
         x = 0;
         y = 0;
-        vy = 0;
         vx = 0;
-      }
+        vy = 0;
+        creationTime = 0;
 
-      class Line {
-        spring;
-        friction;
-        nodes;
-
-        constructor(e) {
-          this.spring = e.spring + 0.1 * Math.random() - 0.05;
-          this.friction = AnimationFeature.friction + 0.01 * Math.random() - 0.005;
-          const cursorPosition = e.cursorPosition ?? { x: 0, y: 0 };
-          this.nodes = [];
-          for (let i = 0; i < AnimationFeature.size; i++) {
-            const t = new NewNode();
-            t.x = cursorPosition.x;
-            t.y = cursorPosition.y;
-            this.nodes.push(t);
-          }
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.vx = (Math.random() - 0.5) * AnimationFeature.speed;
+          this.vy = (Math.random() - 0.5) * AnimationFeature.speed;
+          this.creationTime = Date.now();
         }
 
         update() {
-          let e = this.spring;
-          let t = this.nodes[0];
-          t.vx += (cursorPosition.x - t.x) * e;
-          t.vy += (cursorPosition.y - t.y) * e;
-          for (let i = 0, a = this.nodes.length; i < a; i++) {
-            t = this.nodes[i];
-            if (i > 0) {
-              const n = this.nodes[i - 1];
-              t.vx += (n.x - t.x) * e;
-              t.vy += (n.y - t.y) * e;
-              t.vx += n.vx * AnimationFeature.dampening;
-              t.vy += n.vy * AnimationFeature.dampening;
-            }
-            t.vx *= this.friction;
-            t.vy *= this.friction;
-            t.x += t.vx;
-            t.y += t.vy;
-            e *= AnimationFeature.tension;
-          }
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vx *= AnimationFeature.dampening;
+          this.vy *= AnimationFeature.dampening;
         }
 
         draw() {
-          let e, t;
-          let n = this.nodes[0].x;
-          let i = this.nodes[0].y;
           ctx.beginPath();
-          ctx.moveTo(n, i);
-          for (let a = 1, o = this.nodes.length - 2; a < o; a++) {
-            e = this.nodes[a];
-            t = this.nodes[a + 1];
-            n = 0.5 * (e.x + t.x);
-            i = 0.5 * (e.y + t.y);
-            ctx.quadraticCurveTo(e.x, e.y, n, i);
-          }
-          e = this.nodes[this.nodes.length - 2];
-          t = this.nodes[this.nodes.length - 1];
-          ctx.quadraticCurveTo(e.x, e.y, t.x, t.y);
-          ctx.stroke();
+          ctx.arc(this.x, this.y, AnimationFeature.size, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
           ctx.closePath();
+        }
+
+        isExpired() {
+          return Date.now() - this.creationTime > AnimationFeature.lifespan;
         }
       }
 
       function renderAnimation() {
         if (running) {
-          ctx.globalCompositeOperation = "source-over";
           ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
           ctx.globalCompositeOperation = "lighter";
-          ctx.strokeStyle = color || "hsla(200, 100%, 50%, 0.7)";
-          ctx.lineWidth = 1;
-          for (let x, t = 0; t < AnimationFeature.trails; t++) {
-            if (newLines[t] !== undefined) {
-              x = newLines[t];
-              x.update();
-              x.draw();
-            }
-          }
+          particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+          });
+          // Remove expired particles
+          particles = particles.filter(p => !p.isExpired());
           window.requestAnimationFrame(renderAnimation);
         }
       }
@@ -128,9 +93,13 @@ const CursorTrail = ({ color }) => {
           cursorPosition.y = event.touches[0].pageY;
         }
         event.preventDefault();
+        // Create new particles at cursor position
+        for (let i = 0; i < AnimationFeature.trails; i++) {
+          particles.push(new Particle(cursorPosition.x, cursorPosition.y));
+        }
       }
 
-      function createLine(event) {
+      function createParticle(event) {
         if (event.touches.length === 1) {
           cursorPosition.x = event.touches[0].pageX;
           cursorPosition.y = event.touches[0].pageY;
@@ -138,22 +107,12 @@ const CursorTrail = ({ color }) => {
       }
 
       function onMouseMove(e) {
-        function populateLines() {
-          newLines = [];
-          for (let i = 0; i < AnimationFeature.trails; i++) {
-            newLines.push(
-              new Line({ spring: 0.45 + (i / AnimationFeature.trails) * 0.025 })
-            );
-          }
-        }
-
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("touchstart", onMouseMove);
         document.addEventListener("mousemove", move);
-        document.addEventListener("touchmove", createLine);
-        document.addEventListener("touchstart", createLine);
+        document.addEventListener("touchmove", createParticle);
+        document.addEventListener("touchstart", createParticle);
         move(e);
-        populateLines();
         renderAnimation();
       }
 
@@ -185,8 +144,8 @@ const CursorTrail = ({ color }) => {
 
       function cleanUp() {
         document.removeEventListener("mousemove", move);
-        document.removeEventListener("touchmove", createLine);
-        document.removeEventListener("touchstart", createLine);
+        document.removeEventListener("touchmove", createParticle);
+        document.removeEventListener("touchstart", createParticle);
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("touchstart", onMouseMove);
         window.removeEventListener("orientationchange", resizeCanvas);
