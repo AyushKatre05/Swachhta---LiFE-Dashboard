@@ -67,3 +67,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* SwachhtaCharts.module.css */
+.container {
+  padding: 20px;
+}
+
+.chartContainer {
+  width: 100%; /* Set chart to take full width */
+  height: 400px; /* Set a flexible height */
+  margin-bottom: 50px;
+}
+
+/* Media query for smaller screens (mobile) */
+@media (max-width: 768px) {
+  .chartContainer {
+    height: 300px; /* Reduce height on mobile */
+  }
+
+  h2, h3 {
+    font-size: 1.2rem; /* Adjust title and subtitle font size */
+  }
+}
