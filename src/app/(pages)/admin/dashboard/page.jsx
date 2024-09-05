@@ -29,7 +29,12 @@ export default async function AdminDashboard() {
         </section>
 
         {/* Alert Button Section */}
-        <section className="flex justify-center">
+        <section className="flex justify-center gap-3">
+          <Link href='/admin'>
+            <Button className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-400 dark:hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+              Back
+            </Button>
+          </Link>
           <Link href={'/admin/dashboard/allUsers'}>
             <Button className="bg-red-500 hover:bg-red-600 dark:bg-red-400 dark:hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
               Send Alert Message

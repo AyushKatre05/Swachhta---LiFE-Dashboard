@@ -25,6 +25,15 @@ export default function LandingPage() {
               Login
             </motion.button>
           </Link>
+          <Link href="/admin">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 bg-green-700 dark:bg-green-500 text-white rounded-md hover:bg-green-800 dark:hover:bg-green-600 transition"
+            >
+              Admin
+            </motion.button>
+          </Link>
         </div>
       </header>
 

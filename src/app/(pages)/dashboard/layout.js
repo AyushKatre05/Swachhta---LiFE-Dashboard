@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Sidebar from "../(components)/Sidebar";
-import Header from "../(components)/Header";
-import Footer from "../(components)/Footer";
+import Sidebar from "../../(components)/Sidebar";
+import Header from "../../(components)/Header";
+import Footer from "../../(components)/Footer";
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

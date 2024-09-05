@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
+import Link from "next/link";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -55,13 +56,21 @@ export default function AdminLogin() {
               }
             />
           </div>
-          <div>
+          <div className="flex flex-col gap-3">
+            <button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 dark:bg-green-400 dark:hover:bg-green-500 rounded-lg p-2 text-white"
+            >
+              Submit
+            </button>
+            <Link href='/'>
             <button
               type="submit"
               className="w-full bg-red-500 hover:bg-red-600 dark:bg-red-400 dark:hover:bg-red-500 rounded-lg p-2 text-white"
             >
-              Submit
+              Back
             </button>
+            </Link>
           </div>
         </form>
       </div>

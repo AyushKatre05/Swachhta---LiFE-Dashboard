@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function AdminDashboard() {
   const [userDetails, setUserDetails] = useState([]);
@@ -98,6 +100,12 @@ export default function AdminDashboard() {
           </motion.button>
         </div>
       )}
+
+      <Link href='/admin/dashboard'>
+            <Button className="bg-red-500 hover:bg-red-600 dark:bg-red-400 dark:hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+              Back
+            </Button>
+          </Link>
 
       <ToastContainer />
     </div>
