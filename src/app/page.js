@@ -29,7 +29,7 @@ export default function LandingPage() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 bg-green-700 dark:bg-green-500 text-white rounded-md hover:bg-green-800 dark:hover:bg-green-600 transition"
+              className="px-4 py-2 bg-red-700 dark:bg-red-500 text-white rounded-md hover:bg-red-800 dark:hover:bg-red-600 transition"
             >
               Admin
             </motion.button>
