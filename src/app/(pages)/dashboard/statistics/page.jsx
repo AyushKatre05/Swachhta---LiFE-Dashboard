@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function StatisticsSection() {
   return (
@@ -14,6 +15,7 @@ export default function StatisticsSection() {
       
       {/* Section 1: Daily Statistics and Monthly Trends */}
       <div className="flex flex-col md:flex-row gap-4 md:gap-6">
+        <Link href='/dashboard/analytics'>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -23,6 +25,7 @@ export default function StatisticsSection() {
           <h3 className="text-lg md:text-xl font-semibold">Daily Statistics</h3>
           <p>Overview of daily statistics and metrics.</p>
         </motion.div>
+        </Link>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
