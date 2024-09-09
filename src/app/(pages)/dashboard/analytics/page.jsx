@@ -56,7 +56,7 @@ const Upload = () => {
         formData.append(fileType, selectedFile);
 
         try {
-            const endpoint = fileType === 'image' ? 'http://127.0.0.1:5000/process_image' : 'http://127.0.0.1:5000/process_video';
+            const endpoint = 'https://detection-with-yolo.onrender.com/process_image';
             const response = await axios.post(endpoint, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
