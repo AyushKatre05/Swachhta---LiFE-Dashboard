@@ -47,47 +47,38 @@ const Upload = () => {
     };
 
     const handleUpload = async () => {
-        if (!selectedFile || !fileType) return;
-
+        if (!selectedFile) return;
+    
         setLoading(true);
         setError(null);
-
+    
         const formData = new FormData();
-        formData.append(fileType, selectedFile);
-
+        formData.append('image', selectedFile);
+    
         try {
-            const endpoint = fileType=='image' ? 'https://localhost:5000/process_image':'https://localhost:5000/process_video';
-            const response = await axios.post(endpoint, formData, {
+            const response = await fetch('http://127.0.0.1:5000/process_image', {
+                method: 'POST',
+                body: formData,
                 headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                    'Accept': 'application/json',
+                },
             });
-
-            if (fileType === 'image') {
-                const { processed_image, total_area, image_area, percentage_waste } = response.data;
-                const imageUrl = `data:image/jpeg;base64,${processed_image}`;
-                setResult({
-                    type: 'image',
-                    imageUrl,
-                    totalArea: total_area,
-                    imageArea: image_area,
-                    percentageWaste: percentage_waste
-                });
-            } else if (fileType === 'video') {
-                const { video_url, average_area, percentage_waste } = response.data;
-                setResult({
-                    type: 'video',
-                    videoUrl: video_url,
-                    averageArea: average_area,
-                    percentageWaste: percentage_waste
-                });
+    
+            if (!response.ok) {
+                throw new Error('Failed to process image');
             }
+    
+            const resultData = await response.json();
+            setResult(resultData);
+    
         } catch (err) {
             setError('Error uploading file');
+            console.error(err);
         } finally {
             setLoading(false);
         }
     };
+    
 
     const getImagePieChartData = () => ({
         labels: ['Total Area of Waste', 'Image Area'],

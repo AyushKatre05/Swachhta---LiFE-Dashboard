@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ModeToggle } from "@/components/ui/modeToggle";
 import CursorTrail from "@/components/CursorTrail";
+import IpPostOfficeDetails from "@/app/(components)/IpPostOfficeDetails"
 
 export default function LandingPage() {
   return (
@@ -129,6 +130,9 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </section>
+
+      <IpPostOfficeDetails/>
+
 
       {/* About Section */}
       <section className="py-16 bg-gray-100 dark:bg-gray-900 text-center">
