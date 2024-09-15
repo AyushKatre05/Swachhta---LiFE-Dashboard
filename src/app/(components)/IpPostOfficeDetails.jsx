@@ -1,6 +1,5 @@
-// components/IpPostOfficeDetails.js
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 export default function IpPostOfficeDetails() {
   const [ipDetails, setIpDetails] = useState(null);
@@ -8,6 +7,11 @@ export default function IpPostOfficeDetails() {
   const [mapUrl, setMapUrl] = useState("");
   const [timezoneDetails, setTimezoneDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Automatically fetch user info on component mount
+  useEffect(() => {
+    getUserInfo();
+  }, []); // Empty dependency array ensures it runs only once on mount
 
   const getUserInfo = () => {
     fetch("https://api.ipify.org/?format=json")
@@ -53,13 +57,7 @@ export default function IpPostOfficeDetails() {
 
   return (
     <div className="py-16 bg-gray-100 dark:bg-gray-900 text-center">
-      <h2 className="text-2xl font-bold mb-4">Find Post Offices Nearby Me</h2>
-      <button
-        onClick={getUserInfo}
-        className="text-lg py-2 px-4 bg-red-700 text-white rounded-md hover:bg-red-800 transition"
-      >
-        Get Info
-      </button>
+      <h2 className="text-4xl text-red-700 font-bold mb-4">Find Post Offices Nearby Me</h2>
 
       {ipDetails && (
         <div className="mt-8 px-4">

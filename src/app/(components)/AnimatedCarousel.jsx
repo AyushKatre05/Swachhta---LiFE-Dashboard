@@ -1,5 +1,4 @@
-// components/AnimatedCarousel.jsx
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
@@ -19,36 +18,32 @@ const AnimatedCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const controls = useAnimation();
 
+  const handleNext = async () => {
+    await controls.start("exit");
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    await controls.start("visible");
+  };
+
+  const handlePrev = async () => {
+    await controls.start("exit");
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    await controls.start("visible");
+  };
+
   useEffect(() => {
-    controls.start("visible");
-    const interval = setInterval(() => {
-      controls.start("exit").then(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        controls.start("visible");
-      });
+    const interval = setInterval(async () => {
+      await controls.start("exit");
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      await controls.start("visible");
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Clean up the interval on unmount
   }, [controls]);
-
-  const handleNext = () => {
-    controls.start("exit").then(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-      controls.start("visible");
-    });
-  };
-
-  const handlePrev = () => {
-    controls.start("exit").then(() => {
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-      controls.start("visible");
-    });
-  };
 
   return (
     <section className="relative py-16 bg-gray-100 dark:bg-gray-900 text-center">
       <div className="max-w-4xl mx-auto px-4 relative">
-        <h2 className="text-3xl font-bold mb-8 sm:text-4xl text-green-800 dark:text-green-400">
+        <h2 className="text-3xl font-bold mb-8 sm:text-4xl text-red-800 dark:text-red-400">
           Our Visits to Post Offices
         </h2>
         <div className="relative overflow-hidden">
