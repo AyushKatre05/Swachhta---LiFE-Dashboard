@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ModeToggle } from "@/components/ui/modeToggle";
 import CursorTrail from "@/components/CursorTrail";
 import IpPostOfficeDetails from "@/app/(components)/IpPostOfficeDetails"
+import AnimatedCarousel from "@/app/(components)/AnimatedCarousel" 
 
 export default function LandingPage() {
   return (
@@ -132,6 +133,8 @@ export default function LandingPage() {
       </section>
 
       <IpPostOfficeDetails/>
+
+      <AnimatedCarousel />
 
 
       {/* About Section */}
