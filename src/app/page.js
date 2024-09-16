@@ -6,7 +6,6 @@ import { ModeToggle } from "@/components/ui/modeToggle";
 import CursorTrail from "@/components/CursorTrail";
 import IpPostOfficeDetails from "@/app/(components)/IpPostOfficeDetails";
 import AnimatedCarousel from "@/app/(components)/AnimatedCarousel";
-import SplineModel from "@/app/(components)/SplineModel";
 
 export default function LandingPage() {
   return (
@@ -243,7 +242,6 @@ export default function LandingPage() {
           <li>Helps monitor eco-friendly initiatives in real-time.</li>
         </ul>
         </motion.div>
-        <SplineModel />
       </section>
 
       {/* Footer */}
