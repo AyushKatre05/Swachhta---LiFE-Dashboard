@@ -219,8 +219,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-<<<<<<< HEAD
-=======
       <section id="solution" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
         <motion.div
           className="max-w-5xl mx-auto my-5"
@@ -248,8 +246,6 @@ export default function LandingPage() {
         <SplineModel />
       </section>
 
-
->>>>>>> f0a49d841591d55e9909dfd55a8b9faf8203d092
       {/* Footer */}
       <footer className="bg-red-600 text-white">
         <motion.div
