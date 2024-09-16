@@ -1,15 +1,12 @@
 "use client";
-export const dynamic = 'force-dynamic';
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Toast from "@/components/Toast";
 
 export default function SignInOne() {
-  const searchParam = useSearchParams();
 
   const [authData, setAuthData] = useState({
     email: "",
@@ -17,10 +14,6 @@ export default function SignInOne() {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setError] = useState({});
-
-  useEffect(() => {
-    console.log("The query is", searchParam.get("error"));
-  }, [searchParam]);
 
   const submitForm = async () => {
     setLoading(true);
@@ -52,7 +45,6 @@ export default function SignInOne() {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
       <Toast />
       <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -136,6 +128,5 @@ export default function SignInOne() {
         </div>
       </div>
     </section>
-    </Suspense>
   );
 }
