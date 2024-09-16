@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/ui/modeToggle";
 import CursorTrail from "@/components/CursorTrail";
 import IpPostOfficeDetails from "@/app/(components)/IpPostOfficeDetails";
 import AnimatedCarousel from "@/app/(components)/AnimatedCarousel";
+import SplineModel from "@/app/(components)/SplineModel";
 
 export default function LandingPage() {
   return (
@@ -74,6 +75,11 @@ export default function LandingPage() {
           <li>
             <Link href="#postoffices" className="hover:text-gray-200">
               Post Offices
+            </Link>
+          </li>
+          <li>
+            <Link href="#solution" className="hover:text-gray-200">
+              Our Solution
             </Link>
           </li>
         </ul>
@@ -151,7 +157,7 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
         >
-          <h2 className="text-3xl font-bold mb-8 sm:text-4xl text-red-800 dark:text-red-400">
+          <h2 className="text-3xl font-bold mb-8 sm:text-4xl text-red-900 dark:text-red-600">
             Key Features
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -179,7 +185,7 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8 }}
               >
-                <h3 className="text-2xl font-semibold mb-4 text-red-700 dark:text-red-300">
+                <h3 className="text-2xl font-semibold mb-4 text-red-900 dark:text-red-500">
                   {feature.title}
                 </h3>
                 <p className="text-lg text-gray-700 dark:text-gray-300">
@@ -211,6 +217,33 @@ export default function LandingPage() {
         >
       <IpPostOfficeDetails />
         </motion.div>
+      </section>
+
+      <section id="solution" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
+        <motion.div
+          className="max-w-5xl mx-auto my-5"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+        >
+           <div>
+          <h2  className="text-3xl font-bold mb-8 sm:text-4xl text-red-800 dark:text-red-400">
+            Our Solution : 3D Visualization of Post Offices Waste Management
+          </h2>
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
+            This 3D model showcases the waste management process in various post offices.
+            It highlights areas where waste is detected and provides insight into how
+            eco-friendly practices are being implemented. The model is interactive,
+            allowing users to explore different perspectives and analyze the data.
+          </p>
+        </div>
+        <ul className="w-full list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
+          <li>Real-time waste detection in post offices.</li>
+          <li>Shows waste area and percentage with 3D visualizations.</li>
+          <li>Helps monitor eco-friendly initiatives in real-time.</li>
+        </ul>
+        </motion.div>
+        <SplineModel />
       </section>
 
 
