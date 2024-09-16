@@ -11,8 +11,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       } md:translate-x-0 md:fixed md:w-64 transition-transform duration-300 ease-in-out overflow-y-auto h-screen md:h-screen`}
     >
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between p-5 bg-orange-500 dark:bg-gray-900 md:justify-center">
-        <h1 className="text-lg font-semibold">Dashboard</h1>
+      <div className="flex items-center justify-between p-5 bg-red-600 dark:bg-gray-900 md:justify-center">
+        <h1 className="text-lg text-white font-semibold">Dashboard</h1>
         <button onClick={toggleSidebar} className="text-black dark:text-gray-300 md:hidden p-2">
           <X className="w-6 h-6" />
         </button>

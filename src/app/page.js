@@ -9,9 +9,9 @@ import AnimatedCarousel from "@/app/(components)/AnimatedCarousel";
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-200 dark:from-gray-900 dark:to-black text-gray-900 dark:text-gray-100 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-200 dark:from-gray-900 dark:to-black text-gray-900 dark:text-gray-100 overflow-hidden scroll-smooth">
       {/* Cursor Trail */}
-      <CursorTrail />
+      <CursorTrail color="#f56565"/>
 
       {/* Header */}
       <header className="w-full flex justify-between items-center px-6 py-4 bg-red-600 dark:bg-red-800 text-white shadow-md">
@@ -23,7 +23,7 @@ export default function LandingPage() {
           />
         </div>
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center">
-          Swacch Bharat & LiFE Practices Monitoring
+          Swacch Bharat & LiFE Practices 
         </h1>
         <div className="flex items-center space-x-2 sm:space-x-4">
           <ModeToggle />
@@ -67,20 +67,20 @@ export default function LandingPage() {
             </Link>
           </li>
           <li>
-            <Link href="#solution" className="hover:text-gray-200">
-              Our Solution
+            <Link href="#visits" className="hover:text-gray-200">
+              Visits
             </Link>
           </li>
           <li>
-            <Link href="#info" className="hover:text-gray-200">
-              Info
+            <Link href="#postoffices" className="hover:text-gray-200">
+              Post Offices
             </Link>
           </li>
         </ul>
       </nav>
 
       {/* Introduction Section */}
-      <section className="w-full flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 py-16 px-6">
+      <section id="home" className="w-full flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 py-16 px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-6xl mx-auto gap-5">
           {/* Image */}
           <motion.div
@@ -96,7 +96,6 @@ export default function LandingPage() {
             />
           </motion.div>
 
-          {/* Info */}
           <motion.div
             className="w-full lg:w-1/2 text-left"
             initial={{ opacity: 0, x: 50 }}
@@ -107,13 +106,10 @@ export default function LandingPage() {
               Introduction
             </h1>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-              The Department of Posts is committed to institutionalizing
-              Swachhta protocols and adopting Lifestyle for Environment (LiFE)
-              practices across its network. This solution utilizes AI and
-              pictorial data-based automated monitoring to achieve these goals.
+              The Department of Posts is committed to institutionalizing Swachhta protocols and adopting Lifestyle for Environment (LiFE) practices across its network. This solution utilizes AI and pictorial data-based automated monitoring to achieve these goals.
             </p>
             <div className="mt-8">
-              <Link href="/">
+              <Link href="#about">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -128,9 +124,9 @@ export default function LandingPage() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 bg-gray-100 dark:bg-gray-900 text-left">
+      <section id="about" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
         <motion.div
-          className="max-w-4xl mx-auto px-4"
+          className="max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
@@ -139,23 +135,18 @@ export default function LandingPage() {
             About the Dashboard
           </h2>
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-            <b>Swachhta Focus:</b> Our system continuously monitors post offices
-            using real-time image processing to maintain top cleanliness
-            standards. It quickly identifies areas needing attention, ensuring a
-            consistently clean environment.
+            <b>Swachhta Focus:</b> Our system continuously monitors post offices using real-time image processing to maintain top cleanliness standards. It quickly identifies areas needing attention, ensuring a consistently clean environment.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300">
-            <b>LiFE (Lifestyle for Environment):</b> We promote eco-friendly
-            practices by monitoring waste management and encouraging sustainable
-            behaviors.
+            <b>LiFE (Lifestyle for Environment):</b> We promote eco-friendly practices by monitoring waste management and encouraging sustainable behaviors.
           </p>
         </motion.div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-gray-100 dark:bg-gray-900 text-left">
+      <section id="features" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
         <motion.div
-          className="max-w-5xl mx-auto px-4"
+          className="max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
@@ -200,26 +191,41 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      <section id="visits" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
+        <motion.div
+          className="max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+        >
       <AnimatedCarousel />
+        </motion.div>
+      </section>
+
+      <section id="postoffices" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
+        <motion.div
+          className="max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+        >
       <IpPostOfficeDetails />
+        </motion.div>
+      </section>
+
 
       {/* Footer */}
-      <footer className="bg-gray-100 dark:bg-gray-900 text-white py-12">
+      <footer className="bg-red-600 text-white">
         <motion.div
           className="container mx-auto text-center"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="mb-8">
-            <h3 className="text-2xl font-semibold text-red-700 mb-2">
+            <h3 className="text-2xl font-semibold text-white">
               Swachh Bharat Initiative
             </h3>
-            <p className="text-gray-700 dark:text-gray-300">
-              Join us in making India a cleaner and greener place to live.
-            </p>
-          </div>
-          <p className="text-gray-700 dark:text-gray-300 text-sm">
+            <p className="text-gray-700 dark:text-gray-300 text-sm">
             © {new Date().getFullYear()} Swachh Bharat. All rights reserved.
           </p>
         </motion.div>
@@ -227,4 +233,3 @@ export default function LandingPage() {
     </div>
   );
 }
-

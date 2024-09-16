@@ -61,7 +61,7 @@ export default function AdminLogin() {
               type="submit"
               className="w-full bg-green-500 hover:bg-green-600 dark:bg-green-400 dark:hover:bg-green-500 rounded-lg p-2 text-white"
             >
-              Submit
+              Login
             </button>
             <Link href='/'>
             <button

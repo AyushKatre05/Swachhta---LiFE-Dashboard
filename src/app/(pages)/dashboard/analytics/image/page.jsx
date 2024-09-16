@@ -124,7 +124,7 @@ function Home() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen text-white flex flex-col items-center p-6"
+      className="bg-red-500 text-white flex flex-col items-center p-6"
     >
       <h1 className="text-4xl font-bold mb-6 text-center">Upload Image for Detection</h1>
       <input
