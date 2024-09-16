@@ -213,7 +213,6 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-
       {/* Footer */}
       <footer className="bg-red-600 text-white">
         <motion.div
