@@ -1,5 +1,6 @@
+export const dynamic = 'force-dynamic';
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Toast from "@/components/Toast";
@@ -28,6 +29,7 @@ export default function AdminLogin() {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <Toast />
       <div className="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
@@ -75,5 +77,6 @@ export default function AdminLogin() {
         </form>
       </div>
     </div>
+    </Suspense>
   );
 }

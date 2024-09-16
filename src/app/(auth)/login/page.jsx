@@ -1,5 +1,6 @@
+export const dynamic = 'force-dynamic';
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
@@ -51,6 +52,7 @@ export default function SignInOne() {
   };
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
       <Toast />
       <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
@@ -134,5 +136,6 @@ export default function SignInOne() {
         </div>
       </div>
     </section>
+    </Suspense>
   );
 }
