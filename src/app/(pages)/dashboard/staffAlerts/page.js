@@ -1,124 +1,151 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
-function StaffAlertsSection() {
-  const [alerts, setAlerts] = useState([
-    {
-      id: 1,
-      message: "Recycling bins are not properly labeled.",
-      area: "Main Hall",
-      issuedDate: "2024-09-01",
-      status: "Pending",
-      details: "Recycling bins in the main hall are missing labels. Please label them correctly.",
-      assignedTo: "John Doe",
-      updates: []
-    },
-    {
-      id: 2,
-      message: "Energy-efficient lighting not installed.",
-      area: "Office Area",
-      issuedDate: "2024-09-03",
-      status: "In Progress",
-      details: "The office area is lacking energy-efficient lighting. Please install the required lights.",
-      assignedTo: "Jane Smith",
-      updates: [
-        { date: "2024-09-05", comment: "Order placed for lighting." }
-      ]
-    },
-  ]);
+export default function StaffAlerts() {
+  const [alerts, setAlerts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const userId = "current_user_id"; // Replace with actual logged-in user ID
 
-  const handleStatusUpdate = (alertId, newStatus, comment) => {
-    setAlerts(prevAlerts =>
-      prevAlerts.map(alert =>
-        alert.id === alertId
-          ? { ...alert, status: newStatus, updates: [...alert.updates, { date: new Date().toISOString().split('T')[0], comment }] }
-          : alert
-      )
-    );
+  // Fetch alerts for the logged-in user
+  useEffect(() => {
+    const fetchAlerts = async () => {
+      try {
+        const response = await fetch(`/api/alerts?assignedTo=${userId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+          setAlerts(data.alerts);
+        } else {
+          console.error("Failed to fetch alerts:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching alerts:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAlerts();
+  }, [userId]);
+
+  const resolveAlert = async (alertId) => {
+    try {
+      const response = await fetch(`/api/alerts/${alertId}/resolve`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        // Update the alert status locally
+        setAlerts(prevAlerts =>
+          prevAlerts.map(alert =>
+            alert._id === alertId ? { ...alert, status: 'Resolved' } : alert
+          )
+        );
+      } else {
+        console.error("Failed to resolve alert:", data.error);
+      }
+    } catch (error) {
+      console.error("Error resolving alert:", error);
+    }
   };
 
-  return (
-    <section id="alerts" className="mb-8">
-      <h2 className="text-2xl font-bold mb-4">My Alerts</h2>
-      <div className="bg-white p-4 rounded shadow mb-6">
-        <h3 className="text-xl font-semibold mb-2">Active Alerts</h3>
-        <table className="w-full text-left">
-          <thead>
-            <tr>
-              <th className="p-2">Message</th>
-              <th className="p-2">Area</th>
-              <th className="p-2">Issued Date</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {alerts.map(alert => (
-              <tr key={alert.id}>
-                <td className="p-2">{alert.message}</td>
-                <td className="p-2">{alert.area}</td>
-                <td className="p-2">{alert.issuedDate}</td>
-                <td className="p-2">{alert.status}</td>
-                <td className="p-2">
-                  <button 
-                    onClick={() => document.getElementById(`details-${alert.id}`).classList.toggle('hidden')}
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                  >
-                    Details
-                  </button>
-                  <button 
-                    onClick={() => handleStatusUpdate(alert.id, 'In Progress', 'Started working on it')}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded ml-2"
-                  >
-                    Mark In Progress
-                  </button>
-                  <button 
-                    onClick={() => handleStatusUpdate(alert.id, 'Resolved', 'Issue resolved')}
-                    className="bg-green-500 text-white px-2 py-1 rounded ml-2"
-                  >
-                    Mark Resolved
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+  if (isLoading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="flex justify-center items-center min-h-screen"
+      >
+        <p className="text-xl text-gray-600">Loading alerts...</p>
+      </motion.div>
+    );
+  }
 
-      {alerts.map(alert => (
-        <div id={`details-${alert.id}`} key={alert.id} className="bg-white p-4 rounded shadow mb-6 hidden">
-          <h3 className="text-xl font-semibold mb-2">Alert Details</h3>
-          <p><strong>Message:</strong> {alert.message}</p>
-          <p><strong>Area:</strong> {alert.area}</p>
-          <p><strong>Issued Date:</strong> {alert.issuedDate}</p>
-          <p><strong>Status:</strong> {alert.status}</p>
-          <p><strong>Details:</strong> {alert.details}</p>
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold mb-2">Updates</h4>
-            <ul className="list-disc pl-5">
-              {alert.updates.map((update, index) => (
-                <li key={index}>{update.date}: {update.comment}</li>
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="p-8 bg-gray-50 min-h-screen"
+    >
+      <h1 className="text-3xl font-bold mb-8 text-center text-indigo-700">My Alerts</h1>
+
+      <motion.div
+        className="overflow-x-auto rounded-lg shadow-lg"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 1 }}
+      >
+        {alerts.length > 0 ? (
+          <motion.table
+            className="min-w-full bg-white shadow-md rounded-lg border border-gray-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            <thead className="bg-indigo-600 text-white">
+              <tr>
+                <th className="py-3 px-4 text-left">Message</th>
+                <th className="py-3 px-4 text-left">Area</th>
+                <th className="py-3 px-4 text-left">Issued Date</th>
+                <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {alerts.map((alert) => (
+                <motion.tr
+                  key={alert._id}
+                  className="border-b hover:bg-indigo-50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 1 }}
+                >
+                  <td className="py-3 px-4">{alert.message}</td>
+                  <td className="py-3 px-4">{alert.area}</td>
+                  <td className="py-3 px-4">{new Date(alert.issuedDate).toLocaleDateString()}</td>
+                  <td className="py-3 px-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-white ${
+                        alert.status === 'Pending'
+                          ? 'bg-yellow-500'
+                          : alert.status === 'In Progress'
+                          ? 'bg-blue-500'
+                          : 'bg-green-500'
+                      }`}
+                    >
+                      {alert.status}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4">
+                    {alert.status === 'Pending' && (
+                      <button
+                        onClick={() => resolveAlert(alert._id)}
+                        className="bg-green-500 text-white px-4 py-2 rounded"
+                      >
+                        Resolve
+                      </button>
+                    )}
+                  </td>
+                </motion.tr>
               ))}
-            </ul>
-          </div>
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold mb-2">Add Comment</h4>
-            <textarea 
-              rows="3" 
-              className="w-full p-2 border border-gray-300 rounded mb-2"
-              placeholder="Add your comments here"
-            ></textarea>
-            <button 
-              onClick={() => handleStatusUpdate(alert.id, alert.status, document.querySelector(`#details-${alert.id} textarea`).value)}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Submit Comment
-            </button>
-          </div>
-        </div>
-      ))}
-    </section>
+            </tbody>
+          </motion.table>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-center text-gray-600 py-10"
+          >
+            <p>No alerts assigned to you.</p>
+          </motion.div>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
-
-export default StaffAlertsSection;
