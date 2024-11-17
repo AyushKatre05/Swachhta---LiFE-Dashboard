@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function ActionsSection() {
   return (
@@ -20,18 +21,22 @@ export default function ActionsSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
+          <Link href='/dashboard/staffReports'>
           <Button className="bg-blue-600 text-white p-4 rounded-lg shadow-md flex-1 transition-transform transform hover:scale-105 dark:bg-blue-700">
             Generate Report
           </Button>
+          </Link>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
+          <Link href='/dashboard/staffAlerts'>
           <Button className="bg-blue-700 text-white p-4 rounded-lg shadow-md flex-1 transition-transform transform hover:scale-105 dark:bg-blue-800">
             Review Alerts
           </Button>
+          </Link>
         </motion.div>
       </div>
 
