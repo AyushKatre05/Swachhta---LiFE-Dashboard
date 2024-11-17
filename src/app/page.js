@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/ui/modeToggle";
 import CursorTrail from "@/components/CursorTrail";
 import IpPostOfficeDetails from "@/app/(components)/IpPostOfficeDetails";
 import AnimatedCarousel from "@/app/(components)/AnimatedCarousel";
+// import SplineModel from "@/app/(components)/SplineModel";
 
 export default function LandingPage() {
   return (
@@ -218,7 +219,7 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      <section id="solution" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
+      {/* <section id="solution" className="py-16 bg-gray-100 dark:bg-gray-900 px-6">
         <motion.div
           className="max-w-5xl mx-auto my-5"
           initial={{ opacity: 0, y: 50 }}
@@ -242,7 +243,9 @@ export default function LandingPage() {
           <li>Helps monitor eco-friendly initiatives in real-time.</li>
         </ul>
         </motion.div>
-      </section>
+      </section> */}
+
+      {/* <section className="cursor-none"><SplineModel/></section> */}
 
       {/* Footer */}
       <footer className="bg-red-600 text-white">
