@@ -30,20 +30,14 @@ export const authOptions = {
 
     async jwt({ token, user }) {
       if (user) {
-        token.user = {
-          ...user,
-          id: user._id.toString(), // Convert ObjectId to string
-        };
+        user.role = user?.role == null ? "User" : user?.role;
+        token.user = user;
       }
       return token;
     },
 
     async session({ session, token }) {
-      // Add the user's ObjectId (id) to the session
-      session.user = {
-        ...token.user,
-        id: token.user.id, // Add the ObjectId (converted to string) here
-      };
+      session.user = token.user;
       return session;
     },
   },
