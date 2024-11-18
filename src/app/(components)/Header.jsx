@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import React from "react";
 import {ModeToggle} from '@/components/ui/modeToggle'
+import Notification from "./Notification"
 
 export default function Header({ toggleSidebar }) {
   return (
@@ -12,7 +13,10 @@ export default function Header({ toggleSidebar }) {
         <Menu/>
       </button>
       <h1 className="text-xl">Swachhta & LiFE Dashboard</h1>
+      <div className="flex items-center justify-center gap-6">
+      <Notification/>
       <ModeToggle/>
+      </div>
     </header>
   );
 }
