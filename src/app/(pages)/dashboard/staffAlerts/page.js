@@ -10,8 +10,8 @@ const Alerts = () => {
   useEffect(() => {
     const fetchAlerts = async () => {
       // Only fetch alerts if user is logged in
-      if (session?.user?.id) {
-        const url = `/api/alerts?assignedTo=${session.user.id}`; // Use user id from session
+      if (session?.user?._id) {
+        const url = `/api/alerts?assignedTo=${session.user._id}`; // Use user id from session
 
         try {
           const res = await fetch(url);
@@ -19,7 +19,7 @@ const Alerts = () => {
 
           if (data.success) {
             // Filter alerts to only show the ones assigned to the current user
-            const userAlerts = data.alerts.filter(alert => alert.assignedTo?._id === session.user.id);
+            const userAlerts = data.alerts.filter(alert => alert.assignedTo?._id === session.user._id);
             setAlerts(userAlerts);
           } else {
             console.error("Error fetching alerts:", data.error);
