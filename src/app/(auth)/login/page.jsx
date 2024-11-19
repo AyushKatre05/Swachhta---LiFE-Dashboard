@@ -129,7 +129,14 @@ export default function SignInOne() {
             href="/magic-link"
             className="w-full py-3 rounded-md border border-gray-300 bg-white dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-gray-100 font-semibold flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-300"
           >
-            Sign in with Magic Link
+            <Image
+              src="/magic_link.png"
+              height={24}
+              width={24}
+              alt="Google Icon"
+              className="mr-3"
+            />
+            Sign in via Email Link
           </Link>
         </div>
       </div>
