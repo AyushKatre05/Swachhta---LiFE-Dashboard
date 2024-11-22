@@ -1,40 +1,36 @@
-"use client"
+// components/ThemeToggleButton.js
+"use client";
 
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useState, useEffect } from "react";
+import { Button } from '@/components/ui/button';
+import { Sun, Moon } from "lucide-react"; // Icons for light/dark modes
 
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+export function ModeToggle () {
+  const [theme, setTheme] = useState("light");
 
-export function ModeToggle() {
-  const { setTheme } = useTheme()
+  useEffect(() => {
+    // Set initial theme from localStorage or default to light
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.classList.toggle("dark", storedTheme === "dark");
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    localStorage.setItem("theme", newTheme); // Persist theme
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
+    <Button
+      onClick={toggleTheme}
+      variant="ghost" // Styling variant from shadcn/ui
+      size="sm" // Small button
+      className="flex items-center gap-2"
+    >
+      {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+    </Button>
+  );
+};
+
