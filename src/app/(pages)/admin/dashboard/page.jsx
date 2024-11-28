@@ -28,7 +28,7 @@ export default function AdminDashboard() {
           </Link>
           <Link href="/admin/dashboard/allUsers">
             <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg shadow-lg">
-              View All Post Masters
+              View Post Masters Details
             </Button>
           </Link>
         </div>
