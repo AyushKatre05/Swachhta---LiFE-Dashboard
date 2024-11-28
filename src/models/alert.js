@@ -22,7 +22,7 @@ const alertSchema = new Schema({
     type: String,
   },
   assignedTo: {
-    type: Schema.Types.ObjectId, // Reference to the User (PostMaster)
+    type: Schema.Types.ObjectId, 
     ref: "User",
     required: true,
   },
