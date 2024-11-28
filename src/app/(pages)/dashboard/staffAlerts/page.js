@@ -1,43 +1,40 @@
 'use client';
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react"; // Import useSession hook
-import { motion } from "framer-motion"; // Import framer-motion for animation
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { motion } from 'framer-motion';
 
 const Alerts = () => {
   const { data: session, status } = useSession(); // Get session data
   const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAlerts = async () => {
-      // Only fetch alerts if user is logged in
       if (session?.user?._id) {
-        const url = `/api/alerts?assignedTo=${session.user._id}`; // Use user id from session
-
+        const url = `/api/alerts?assignedTo=${session.user._id}`; // Get alerts for the logged-in user
         try {
           const res = await fetch(url);
           const data = await res.json();
 
           if (data.success) {
-            // Filter alerts to only show the ones assigned to the current user
-            const userAlerts = data.alerts.filter(
-              (alert) => alert.assignedTo?._id === session.user._id
-            );
-            setAlerts(userAlerts);
+            setAlerts(data.alerts); // Set alerts fetched from the database
           } else {
-            console.error("Error fetching alerts:", data.error);
+            console.error('Error fetching alerts:', data.error);
           }
         } catch (error) {
-          console.error("Error fetching alerts:", error);
+          console.error('Error fetching alerts:', error);
+        } finally {
+          setLoading(false);
         }
       }
     };
 
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       fetchAlerts();
     }
-  }, [session, status]); // Trigger useEffect whenever session or authentication status changes
+  }, [session, status]);
 
-  if (status === "loading") {
+  if (status === 'loading' || loading) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -50,7 +47,7 @@ const Alerts = () => {
     );
   }
 
-  if (status === "unauthenticated") {
+  if (status === 'unauthenticated') {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -96,6 +93,7 @@ const Alerts = () => {
               <tr>
                 <th className="py-3 px-4 text-left">Message</th>
                 <th className="py-3 px-4 text-left">Area</th>
+                <th className="py-3 px-4 text-left">Details</th>
                 <th className="py-3 px-4 text-left">Status</th>
                 <th className="py-3 px-4 text-left">Assigned To</th>
               </tr>
@@ -115,21 +113,24 @@ const Alerts = () => {
                   <td className="py-3 px-4 text-gray-800 dark:text-gray-200">
                     {alert.area}
                   </td>
+                  <td className="py-3 px-4 text-gray-800 dark:text-gray-200">
+                    {alert.details || 'No details provided'}
+                  </td>
                   <td className="py-3 px-4">
                     <span
                       className={`px-3 py-1 rounded-full text-white ${
-                        alert.status === "Pending"
-                          ? "bg-yellow-500 dark:bg-yellow-600"
-                          : alert.status === "In Progress"
-                          ? "bg-blue-500 dark:bg-blue-600"
-                          : "bg-green-500 dark:bg-green-600"
+                        alert.status === 'Pending'
+                          ? 'bg-yellow-500 dark:bg-yellow-600'
+                          : alert.status === 'In Progress'
+                          ? 'bg-blue-500 dark:bg-blue-600'
+                          : 'bg-green-500 dark:bg-green-600'
                       }`}
                     >
                       {alert.status}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-gray-800 dark:text-gray-200">
-                    {alert.assignedTo?.name}
+                    {alert.assignedTo?.name || 'Unassigned'}
                   </td>
                 </motion.tr>
               ))}
