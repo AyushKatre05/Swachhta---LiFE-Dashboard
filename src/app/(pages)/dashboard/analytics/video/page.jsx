@@ -1,193 +1,195 @@
-"use client";
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement } from 'chart.js';
-import 'chart.js/auto';
-import { PulseLoader } from 'react-spinners'; // Import loading spinner
+"use client"
+import { useState, useEffect } from 'react';
+import Papa from 'papaparse';
+import { Bar } from 'react-chartjs-2';
+import { Medal } from 'lucide-react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
+// Register necessary components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function Home() {
-  const [result, setResult] = useState(null);
-  const [videoUrl, setVideoUrl] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(false); // Loading state
+const AnalyticsPage = () => {
+  const [chartData, setChartData] = useState(null);
+  const [tableData, setTableData] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleVideoUpload = async () => {
-    if (!selectedFile) {
-      alert('Please select a video file first.');
-      return;
-    }
-
-    setLoading(true); // Set loading to true
-
-    const formData = new FormData();
-    formData.append('video', selectedFile);
-
-    try {
-      const response = await fetch('http://localhost:5000/detect/video', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await response.json();
-      setResult(data);
-
-      // Fetch the processed video from the Flask API
-      const processedVideoUrl = `http://localhost:5000/download/video?video_path=${data.processed_video_path}`;
-      setVideoUrl(processedVideoUrl);
-    } catch (error) {
-      console.error('Error uploading video:', error);
-    } finally {
-      setLoading(false); // Set loading to false
-    }
-  };
-
-  const chartData = {
-    labels: ['Total Waste Area', 'Image Area', 'Percentage Waste'],
-    datasets: [
-      {
-        label: 'Waste Analysis',
-        data: [
-          result ? result.total_waste_area : 0,
-          result ? result.image_area : 0,
-          result ? result.percentage_waste : 0
-        ],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        borderColor: 'rgba(0,0,0,0.1)',
-        borderWidth: 2
-      }
-    ]
-  };
-
-  const pieChartData = {
-    labels: ['Waste Detected', 'No Waste'],
-    datasets: [
-      {
-        data: [
-          result ? result.total_waste_area : 0,
-          result ? (result.image_area - result.total_waste_area) : 0
-        ],
-        backgroundColor: ['#FF6384', '#36A2EB'],
-        borderColor: '#fff',
-        borderWidth: 2
-      }
-    ]
-  };
-
-  const lineChartData = {
-    labels: ['Frame 1', 'Frame 2', 'Frame 3', 'Frame 4'], // Example frames
-    datasets: [
-      {
-        label: 'Waste Area Over Time',
-        data: [30, 40, 35, 50], // Example data
-        borderColor: '#FF5733',
-        backgroundColor: 'rgba(255, 87, 51, 0.2)',
-        fill: true
-      }
-    ]
-  };
-
-  const doughnutChartData = {
-    labels: ['Detected Waste', 'Remaining Area'],
-    datasets: [
-      {
-        data: [
-          result ? result.total_waste_area : 0,
-          result ? (result.image_area - result.total_waste_area) : 0
-        ],
-        backgroundColor: ['#FFCE56', '#E0E0E0'],
-        borderColor: '#fff',
-        borderWidth: 2
-      }
-    ]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top',
-        labels: {
-          color: '#333'
+  useEffect(() => {
+    const fetchCSV = async () => {
+      try {
+        const response = await fetch('/post_office_stats.csv');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        const csvData = await response.text();
+
+        const parsedData = Papa.parse(csvData, {
+          header: true,
+          skipEmptyLines: true,
+          dynamicTyping: true,
+        }).data;
+
+        setTableData(parsedData);
+      } catch (error) {
+        console.error("Error fetching or parsing CSV data:", error);
+      }
+    };
+
+    fetchCSV();
+  }, []);
+
+  const getMedal = (rank) => {
+    if (rank === 1) return <Medal className="text-yellow-500" />;
+    if (rank === 2) return <Medal className="text-gray-400" />;
+    if (rank === 3) return <Medal className="text-orange-500" />;
+    return rank; // For ranks 4 and above, display the rank number
+  };
+
+  const handlePostChange = (event) => {
+    const postName = event.target.value;
+    setSelectedPost(postName);
+  };
+
+  if (tableData.length === 0) {
+    return <p>Loading...</p>;
+  }
+
+  const calculateAverages = (data) => {
+    const total = {
+      resolutionTime: 0,
+      alertsGenerated: 0,
+      paperIntake: 0,
+    };
+    data.forEach((entry) => {
+      total.resolutionTime += entry["Avg. Resolution Time (Hours)"];
+      total.alertsGenerated += entry["Alerts Generated"];
+      total.paperIntake += entry["Monthly Paper Waste (kg)"];
+    });
+    const count = data.length;
+    return {
+      resolutionTime: total.resolutionTime / count,
+      alertsGenerated: total.alertsGenerated / count,
+      paperIntake: total.paperIntake / count,
+    };
+  };
+
+  const averages = calculateAverages(tableData);
+
+  // Rank the posts based on their paper waste
+  const rankedTableData = tableData
+    .map((entry) => ({
+      ...entry,
+      rank: 0, // Temporary rank to be replaced below
+    }))
+    .sort((a, b) => a["Monthly Paper Waste (kg)"] - b["Monthly Paper Waste (kg)"])
+    .map((entry, index) => {
+      const rank = index + 1;
+      return { ...entry, rank };
+    });
+
+  const selectedPostData = rankedTableData.find(
+    (entry) => entry["Post Name"] === selectedPost
+  );
+
+  const allPostsChartData = {
+    labels: tableData.map((entry) => entry["Post Name"]),
+    datasets: [
+      {
+        label: 'Average Metric Value per Post',
+        data: tableData.map((entry) => {
+          // Calculate the average of the three metrics for each post
+          const resolutionTime = entry["Avg. Resolution Time (Hours)"] || 0;
+          const alertsGenerated = entry["Alerts Generated"] || 0;
+          const paperWaste = entry["Monthly Paper Waste (kg)"] || 0;
+          return (resolutionTime + alertsGenerated + paperWaste) / 3;
+        }),
+        backgroundColor: 'rgba(75, 192, 192, 0.7)', // Single consistent color for the bars
       },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`
-        }
-      }
-    }
+    ],
   };
+  
+
+  const selectedPostChartData = selectedPostData
+    ? {
+        labels: [
+          'Avg. Resolution Time (Hours)',
+          'Alerts Generated',
+          'Monthly Paper Waste (kg)'
+        ],
+        datasets: [
+          {
+            label: selectedPost,
+            data: [
+              selectedPostData["Avg. Resolution Time (Hours)"],
+              selectedPostData["Alerts Generated"],
+              selectedPostData["Monthly Paper Waste (kg)"],
+            ],
+            backgroundColor: 'rgba(0, 123, 255, 0.7)',
+          },
+          {
+            label: 'Average',
+            data: [
+              averages.resolutionTime,
+              averages.alertsGenerated,
+              averages.paperIntake
+            ],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          },
+        ],
+      }
+    : null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="bg-red-500 text-white flex flex-col items-center p-6"
-    >
-      <h1 className="text-4xl font-bold mb-6 text-center">Upload Video for Detection</h1>
-      <input
-        type="file"
-        accept="video/*"
-        onChange={handleFileChange}
-        className="mb-6 p-2 bg-white text-black rounded-lg"
-      />
-      <button
-        onClick={handleVideoUpload}
-        className="mb-6 px-4 py-2 bg-yellow-500 text-black rounded-lg shadow-md hover:bg-yellow-600 transition duration-300"
-      >
-        Upload Video
-      </button>
-      {loading ? (
-        <div className="flex items-center justify-center w-full h-full">
-          <PulseLoader color="#ffffff" loading={loading} />
-        </div>
-      ) : result && (
-        <div className="w-full max-w-6xl">
-          <h2 className="text-2xl font-semibold mb-4 text-center">Results:</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6">
-            <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-              <h3 className="text-lg font-semibold mb-2 text-center">Bar Chart</h3>
-              <div className="w-full h-64 lg:h-80">
-                <Bar data={chartData} options={chartOptions} />
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-              <h3 className="text-lg font-semibold mb-2 text-center">Line Chart</h3>
-              <div className="w-full h-64 lg:h-80">
-                <Line data={lineChartData} options={chartOptions} />
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-              <h3 className="text-lg font-semibold mb-2 text-center">Pie Chart</h3>
-              <div className="w-full h-64 lg:h-80">
-                <Pie data={pieChartData} options={chartOptions} />
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-              <h3 className="text-lg font-semibold mb-2 text-center">Doughnut Chart</h3>
-              <div className="w-full h-64 lg:h-80">
-                <Doughnut data={doughnutChartData} options={chartOptions} />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {videoUrl && (
-        <div className="mt-6 w-full max-w-4xl">
-          <h2 className="text-2xl font-semibold mb-2 text-center">Processed Video:</h2>
-          <video controls src={videoUrl} className="w-full h-auto rounded-lg shadow-lg" />
-        </div>
-      )}
-    </motion.div>
-  );
-}
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Post Office Analytics</h1>
 
-export default Home;
+      <div className="mb-4">
+        <label htmlFor="postSelect" className="mr-2">Select Post Office:</label>
+        <select
+          id="postSelect"
+          value={selectedPost || ''}
+          onChange={handlePostChange}
+          className="p-2 border border-gray-300"
+        >
+          <option value="">Show All Post Offices</option>
+          {tableData.map((entry) => (
+            <option key={entry["Post Name"]} value={entry["Post Name"]}>
+              {entry["Post Name"]}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+        {selectedPost ? (
+          <Bar data={selectedPostChartData} />
+        ) : (
+          <Bar data={allPostsChartData} />
+        )}
+      </div>
+
+      <h2 className="text-xl font-bold mt-6 mb-4">Rankings</h2>
+      <table className="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+          <tr>
+            <th className="border border-gray-300 px-4 py-2">Rank</th>
+            <th className="border border-gray-300 px-4 py-2">Post Name</th>
+            <th className="border border-gray-300 px-4 py-2">Region</th>
+            <th className="border border-gray-300 px-4 py-2">Waste (kg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rankedTableData.map((entry) => (
+            <tr key={entry["Post Name"]}>
+              <td className="border border-gray-300 px-4 py-2">{getMedal(entry.rank)}</td>
+              <td className="border border-gray-300 px-4 py-2">{entry["Post Name"]}</td>
+              <td className="border border-gray-300 px-4 py-2">{entry.Region}</td>
+              <td className="border border-gray-300 px-4 py-2">{entry["Monthly Paper Waste (kg)"]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default AnalyticsPage;
