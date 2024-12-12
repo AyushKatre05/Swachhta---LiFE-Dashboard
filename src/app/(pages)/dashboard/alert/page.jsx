@@ -49,9 +49,11 @@ export default function ActionsSection() {
           className="flex flex-col md:flex-row gap-4 md:gap-6"
         >
           <div className="flex-1">
+            <Link href={"/dashboard/postHead"}>
             <Button className="bg-green-600 text-white p-4 rounded-lg shadow-md w-full transition-transform transform hover:scale-105 dark:bg-green-700">
-              View Analytics
+              View Reports
             </Button>
+            </Link>
           </div>
           <div className="flex-1">
             <Button className="bg-yellow-600 text-white p-4 rounded-lg shadow-md w-full transition-transform transform hover:scale-105 dark:bg-yellow-700">

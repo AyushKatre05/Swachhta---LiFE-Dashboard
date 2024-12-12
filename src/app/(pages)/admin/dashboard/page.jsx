@@ -21,14 +21,14 @@ export default function AdminDashboard() {
           Seamlessly manage Swachhta and LiFE practices across all post offices in your division with an intuitive and powerful dashboard.
         </p>
         <div className="mt-8 flex gap-4">
-        <Link href="/admin/postHead/dashboard">
-            <Button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg">
-              Monitor P/Os
-            </Button>
-          </Link>
           <Link href="/admin/dashboard/allUsers">
             <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg shadow-lg">
               View Post Masters Details
+            </Button>
+          </Link>
+          <Link href="/admin/dashboard/life-practice">
+            <Button className="bg-green-400 hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg shadow-lg">
+              Life Practice
             </Button>
           </Link>
         </div>
